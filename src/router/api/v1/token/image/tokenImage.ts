@@ -1,5 +1,8 @@
+const commaPattern = /\B(?=(\d{3})+(?!\d))/g
+
 export function formatSVG(token_id: string): string {
   console.log('svg', token_id)
+  const formattedTokenId = token_id.replace(commaPattern, ',')
   return `<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:opsz@14..32");
@@ -51,6 +54,6 @@ export function formatSVG(token_id: string): string {
     <stop offset="1" stop-color="#FF79C9"/>
     </linearGradient>
     </defs>
-    <text x="400" y="420" fill="#333333" fill-opacity="1" text-anchor="end" font-size="5em" font-family="Inter, sans" >#${token_id}</text>
+    <text x="400" y="420" fill="#333333" fill-opacity="1" text-anchor="end" font-size="5em" font-family="Inter, sans" >#${formattedTokenId}</text>
     </svg>`
 }
