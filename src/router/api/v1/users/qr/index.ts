@@ -68,7 +68,10 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
       )
       .replace(/<path/g, '<path fill="url(#grad1)" ')
 
-    const svgWithLogo = image.replace('</svg>', `${efplogoSVG}</svg>`)
+    const svgWithLogo = image.replace(
+      '</svg>',
+      `${efplogoSVG}<image href="https://metadata.ens.domains/mainnet/avatar/${ensName}" width="68" height="68" transform="translate(160.928, 160.928)"/></svg>`
+    )
     context.header('Content-Type', 'image/svg+xml;charset=utf-8')
     return context.body(svgWithLogo)
   })
