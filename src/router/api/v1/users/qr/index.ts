@@ -1,34 +1,35 @@
+import qrcode from 'qr-image'
 import type { Hono } from 'hono'
 import { env } from 'hono/adapter'
-import qrcode from 'qr-image'
+
+import { isAddress } from '#/utilities'
 import type { Services } from '#/service'
 import type { Address, Environment } from '#/types'
-import { isAddress } from '#/utilities'
 
 const efplogoSVG = `<svg width="51.2" height="51.2" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="91" height="91" fill="#333333" transform="translate(149.8, 149.8)"/>
-<rect width="51.2" height="51.2" rx="7.5" fill="url(#paint0_linear_564_124)" transform="translate(170, 170)"/>
-<rect width="51.2" height="51.2" rx="7.5" fill="white" fill-opacity="0.5" transform="translate(170, 170)"/>
-<path d="M16.768 25.856L25.536 11.264L34.24 25.856L25.536 31.168L16.768 25.856Z" fill="url(#paint1_linear_564_124)" transform="translate(170, 170)"/>
-<path d="M16.768 25.856L25.536 11.264L34.24 25.856L25.536 31.168L16.768 25.856Z" fill="#333333" transform="translate(170, 170)"/>
-<path d="M25.536 32.768L16.768 27.456L25.536 39.808L34.24 27.456L25.536 32.768Z" fill="url(#paint2_linear_564_124)" transform="translate(170, 170)"/>
-<path d="M25.536 32.768L16.768 27.456L25.536 39.808L34.24 27.456L25.536 32.768Z" fill="#333333" transform="translate(170, 170)"/>
-<path d="M36.736 34.176H34.24V37.888H30.784V40.192H34.24V44.032H36.736V40.192H40.128V37.888H36.736V34.176Z" fill="url(#paint3_linear_564_124)" transform="translate(170, 170)"/>
-<path d="M36.736 34.176H34.24V37.888H30.784V40.192H34.24V44.032H36.736V40.192H40.128V37.888H36.736V34.176Z" fill="#333333" transform="translate(170, 170)"/>
+<rect width="82" height="82" fill="#333333" rx="10" transform="translate(153.8, 153.8)"/>
+<rect width="68" height="68" rx="11" fill="url(#paint0_linear_564_124)" transform="translate(160.928, 160.928)"/>
+<rect width="68" height="68" rx="11" fill="white" fill-opacity="0.5" transform="translate(160.928, 160.928)"/>
+<path d="M22.13376 34.12992L33.70752 14.86848L45.1968 34.12992L33.70752 41.14176L22.13376 34.12992Z" fill="url(#paint1_linear_564_124)" transform="translate(160.928, 160.928)"/>
+<path d="M22.13376 34.12992L33.70752 14.86848L45.1968 34.12992L33.70752 41.14176L22.13376 34.12992Z" fill="#333333" transform="translate(160.928, 160.928)"/>
+<path d="M33.70752 43.25376L22.13376 36.24192L33.70752 52.54656L45.1968 36.24192L33.70752 43.25376Z" fill="url(#paint2_linear_564_124)" transform="translate(160.928, 160.928)"/>
+<path d="M33.70752 43.25376L22.13376 36.24192L33.70752 52.54656L45.1968 36.24192L33.70752 43.25376Z" fill="#333333" transform="translate(160.928, 160.928)"/>
+<path d="M48.49152 45.11232H45.1968V50.01216H40.63488V52.9536H45.1968V58.12224H48.49152V52.9536H53.96832V50.01216H48.49152V45.11232Z" fill="url(#paint3_linear_564_124)" transform="translate(160.928, 160.928)"/>
+<path d="M48.49152 45.11232H45.1968V50.01216H40.63488V52.9536H45.1968V58.12224H48.49152V52.9536H53.96832V50.01216H48.49152V45.11232Z" fill="#333333" transform="translate(160.928, 160.928)"/>
 <defs>
-<linearGradient id="paint0_linear_564_124" x1="25.6" y1="0" x2="25.6" y2="51.2" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_564_124" x1="30.72" y1="0" x2="30.72" y2="61.44" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
-<linearGradient id="paint1_linear_564_124" x1="28.448" y1="11.264" x2="28.448" y2="44.032" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear_564_124" x1="34.1376" y1="13.5168" x2="34.1376" y2="52.8384" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
-<linearGradient id="paint2_linear_564_124" x1="28.448" y1="11.264" x2="28.448" y2="44.032" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint2_linear_564_124" x1="34.1376" y1="13.5168" x2="34.1376" y2="52.8384" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
-<linearGradient id="paint3_linear_564_124" x1="28.448" y1="11.264" x2="28.448" y2="44.032" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint3_linear_564_124" x1="34.1376" y1="13.5168" x2="34.1376" y2="52.8384" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
@@ -40,24 +41,29 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
     const { addressOrENS } = context.req.param()
 
     let address: Address
+    let ensName: string | null = null
     if (isAddress(addressOrENS)) {
       address = addressOrENS.toLowerCase() as Address
+      ensName = (await services.ens(env(context)).getENSProfile(address)).name
     } else {
+      ensName = addressOrENS
       address = await services.ens(env(context)).getAddress(addressOrENS)
       if (!isAddress(address)) {
         return context.json({ response: 'ENS name not valid or does not exist' }, 404)
       }
     }
 
-    let image = qrcode.imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' }).toString('utf-8')
+    let image = qrcode
+      .imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' })
+      .toString('utf-8')
     image = image
       .replace(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">',
         `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">
         <defs>
         <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#f9ff7c;stop-opacity:1" />
-            <stop offset="80%" style="stop-color:#ffade0;stop-opacity:1" />
+            <stop offset="0%" style="stop-color:#FAF35F;stop-opacity:1" />
+            <stop offset="80%" style="stop-color:#FFAFDD;stop-opacity:1" />
         </linearGradient>
         </defs>
         <rect width="100%" height="100%" fill="#333333"/>`
