@@ -1,10 +1,10 @@
-import qrcode from 'qr-image'
 import type { Hono } from 'hono'
 import { env } from 'hono/adapter'
+import qrcode from 'qr-image'
 
-import { isAddress } from '#/utilities'
 import type { Services } from '#/service'
 import type { Address, Environment } from '#/types'
+import { isAddress } from '#/utilities'
 
 const efplogoSVG = `<svg width="51.2" height="51.2" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="82" height="82" fill="#333333" rx="10" transform="translate(153.8, 153.8)"/>
@@ -53,9 +53,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
       }
     }
 
-    let image = qrcode
-      .imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' })
-      .toString('utf-8')
+    let image = qrcode.imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' }).toString('utf-8')
     image = image
       .replace(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">',
