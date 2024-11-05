@@ -16,6 +16,7 @@ import { listRecords } from './list-records'
 import { lists } from './lists'
 import { poap } from './poap'
 import { primaryList } from './primary-list'
+import { qr } from './qr'
 import { recommended } from './recommended'
 import { relationships } from './relationships'
 import { searchFollowers } from './searchFollowers'
@@ -42,6 +43,7 @@ export function users(services: Services): Hono<{ Bindings: Environment }> {
   lists(users, services)
   poap(users, services)
   primaryList(users, services)
+  qr(users, services)
   recommended(users, services)
   relationships(users, services)
   searchFollowers(users, services)
@@ -67,6 +69,7 @@ export function users(services: Services): Hono<{ Bindings: Environment }> {
           '/poap',
           '/primary-list',
           '/profile',
+          '/qr',
           '/recommended',
           '/relationships',
           '/searchFollowers',
