@@ -57,7 +57,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
     image = image
       .replace(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">',
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">
+        `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 39 39">
         <defs>
         <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" style="stop-color:#FAF35F;stop-opacity:1" />
@@ -70,7 +70,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
 
     const svgWithLogo = image.replace(
       '</svg>',
-      `${efplogoSVG}<image href="https://metadata.ens.domains/mainnet/avatar/${ensName}" width="68" height="68" transform="translate(160.928, 160.928)"/></svg>`
+      `<rect x="13.9" y="13.9" width="12.2" height="12.2" fill="#333333"/>${efplogoSVG}<image width="10" height="10" x="15" y="15" xlink:href="https://metadata.ens.domains/mainnet/avatar/${ensName}" /></svg>`
     )
     context.header('Content-Type', 'image/svg+xml;charset=utf-8')
     return context.body(svgWithLogo)
