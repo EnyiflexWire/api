@@ -12,6 +12,7 @@ import { followerState } from './followerState'
 import { followers } from './followers'
 import { following } from './following'
 import { latestFollowers } from './latestFollowers'
+import { poap } from './poap'
 import { recommended } from './recommended'
 import { records } from './records'
 import { searchFollowers } from './searchFollowers'
@@ -32,6 +33,7 @@ export function lists(services: Services): Hono<{ Bindings: Environment }> {
   followerState(lists, services)
   following(lists, services)
   latestFollowers(lists, services)
+  poap(lists, services)
   recommended(lists, services)
   records(lists, services)
   searchFollowers(lists, services)

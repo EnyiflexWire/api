@@ -3,27 +3,18 @@ import { env } from 'hono/adapter'
 import type { Services } from '#/service'
 import type { IEFPIndexerService } from '#/service/efp-indexer/service'
 import type { Address, Environment } from '#/types'
-import { isAddress } from '#/utilities'
 
-export function poap(users: Hono<{ Bindings: Environment }>, services: Services) {
-  users.get('/:addressOrENS/poap', async context => {
-    const { addressOrENS } = context.req.param()
-    const address: Address = await services.ens(env(context)).getAddress(addressOrENS)
-    if (!isAddress(address)) {
-      return context.json({ response: 'ENS name not valid or does not exist' }, 404)
-    }
-    const efp: IEFPIndexerService = services.efp(env(context))
-    const link = await efp.claimPoapLink(address)
-
-    return context.json({ link }, 200)
-  })
-
-  users.get('/:addressOrENS/badges', async context => {
-    const { addressOrENS } = context.req.param()
+export function poap(lists: Hono<{ Bindings: Environment }>, services: Services) {
+  lists.get('/:token_id/badges', async context => {
+    const { token_id } = context.req.param()
     const { cache } = context.req.query()
 
+    if (Number.isNaN(Number(token_id)) || Number(token_id) <= 0) {
+      return context.json({ response: 'Invalid list id' }, 400)
+    }
+
     const cacheKV = context.env.EFP_DATA_CACHE
-    const cacheTarget = `users/${addressOrENS}/badges`
+    const cacheTarget = `lists/${token_id}/badges`
     if (cache !== 'fresh') {
       const cacheHit = await cacheKV.get(cacheTarget, 'json')
       if (cacheHit) {
@@ -31,9 +22,10 @@ export function poap(users: Hono<{ Bindings: Environment }>, services: Services)
       }
     }
 
-    const address: Address = await services.ens(env(context)).getAddress(addressOrENS)
-    if (!isAddress(address)) {
-      return context.json({ response: 'ENS name not valid or does not exist' }, 404)
+    const efp: IEFPIndexerService = services.efp(env(context))
+    const listUser: Address | undefined = await efp.getAddressByList(token_id)
+    if (!listUser) {
+      return context.json({ response: 'No User Found' }, 404)
     }
 
     const headers = {
@@ -47,7 +39,7 @@ export function poap(users: Hono<{ Bindings: Environment }>, services: Services)
     const collections = ['177709', '178064', '178065', '178066']
     const data = await Promise.all(
       collections.map(async collection => {
-        const response = await fetch(`https://api.poap.tech/actions/scan/${address}/${collection}`, headers)
+        const response = await fetch(`https://api.poap.tech/actions/scan/${listUser}/${collection}`, headers)
         return response.json()
       })
     )

@@ -15,6 +15,7 @@ interface EnvironmentVariables {
   readonly S3_REGION: string
   readonly AIRSTACK_API_KEY: string
   readonly CACHE_TTL: number
+  readonly POAP_API_TOKEN: string
 }
 
 // Cloudflare Workers
