@@ -36,11 +36,17 @@ const efplogoSVG = `<svg width="64" height="64" viewBox="0 0 640 640" fill="none
 </defs>
 </svg>`
 
-const getGradientText = (name: string) =>
-  `<style>text { font-family: sans-serif; font-size: 4px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }</style><text width="100" height="5" y="41" x="51%" fill="url(#grad1)">${name}</text>`
+const getGradientText = (nameOrAddress: string | Address) =>
+  `<style>text { font-family: sans-serif; font-size: 3.5px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }</style><text width="100" height="5" y="41" x="50%" fill="#eeeeee">${
+    isAddress(nameOrAddress)
+      ? `${nameOrAddress.slice(0, 6)}…${nameOrAddress.slice(38, 42)}`
+      : nameOrAddress.length > 18
+        ? `${nameOrAddress.slice(0, 18)}…`
+        : nameOrAddress
+  }</text>`
 
 const getProfileImage = (ensName: string) =>
-  `<image width="10" height="10" x="15" y="15" xlink:href="https://metadata.ens.domains/mainnet/avatar/${ensName}" />`
+  `<image width="10" height="10" x="15" rx="1" y="15" xlink:href="https://metadata.ens.domains/mainnet/avatar/${ensName}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
 
 export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
   users.get('/:addressOrENS/qr', async context => {
@@ -76,7 +82,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
 
     const svgWithLogo = image.replace(
       '</svg>',
-      `${efplogoSVG}${getProfileImage(ensName)}${getGradientText(ensName)}</svg>`
+      `${efplogoSVG}${ensName ? getProfileImage(ensName) : ''}${getGradientText(ensName || address)}</svg>`
     )
 
     context.header('Content-Type', 'image/svg+xml;charset=utf-8')
