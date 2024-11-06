@@ -6,35 +6,41 @@ import type { Services } from '#/service'
 import type { Address, Environment } from '#/types'
 import { isAddress } from '#/utilities'
 
-const efplogoSVG = `<svg width="51.2" height="51.2" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="82" height="82" fill="#333333" rx="10" transform="translate(153.8, 153.8)"/>
-<rect width="68" height="68" rx="11" fill="url(#paint0_linear_564_124)" transform="translate(160.928, 160.928)"/>
-<rect width="68" height="68" rx="11" fill="white" fill-opacity="0.5" transform="translate(160.928, 160.928)"/>
-<path d="M22.13376 34.12992L33.70752 14.86848L45.1968 34.12992L33.70752 41.14176L22.13376 34.12992Z" fill="url(#paint1_linear_564_124)" transform="translate(160.928, 160.928)"/>
-<path d="M22.13376 34.12992L33.70752 14.86848L45.1968 34.12992L33.70752 41.14176L22.13376 34.12992Z" fill="#333333" transform="translate(160.928, 160.928)"/>
-<path d="M33.70752 43.25376L22.13376 36.24192L33.70752 52.54656L45.1968 36.24192L33.70752 43.25376Z" fill="url(#paint2_linear_564_124)" transform="translate(160.928, 160.928)"/>
-<path d="M33.70752 43.25376L22.13376 36.24192L33.70752 52.54656L45.1968 36.24192L33.70752 43.25376Z" fill="#333333" transform="translate(160.928, 160.928)"/>
-<path d="M48.49152 45.11232H45.1968V50.01216H40.63488V52.9536H45.1968V58.12224H48.49152V52.9536H53.96832V50.01216H48.49152V45.11232Z" fill="url(#paint3_linear_564_124)" transform="translate(160.928, 160.928)"/>
-<path d="M48.49152 45.11232H45.1968V50.01216H40.63488V52.9536H45.1968V58.12224H48.49152V52.9536H53.96832V50.01216H48.49152V45.11232Z" fill="#333333" transform="translate(160.928, 160.928)"/>
+const efplogoSVG = `<svg width="64" height="64" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="120.1" height="120.1" fill="#333333" transform="translate(139.9, 140.1)"/>
+<rect width="98.94" height="98.94" rx="16.005" fill="url(#paint0_linear_564_124)" transform="translate(150.2, 150.2)"/>
+<rect width="98.94" height="98.94" rx="16.005" fill="white" fill-opacity="0.5" transform="translate(150.2, 150.2)"/>
+<path d="M32.20462 49.65903L48.04444 21.63364L65.76135 49.65903L48.04444 59.86126L32.20462 49.65903Z" fill="url(#paint1_linear_564_124)" transform="translate(150.2, 150.2)"/>
+<path d="M32.20462 49.65903L48.04444 21.63364L65.76135 49.65903L48.04444 59.86126L32.20462 49.65903Z" fill="#333333" transform="translate(150.2, 150.2)"/>
+<path d="M48.04444 62.93402L32.20462 52.73279L48.04444 76.45524L65.76135 52.73279L48.04444 62.93402Z" fill="url(#paint2_linear_564_124)" transform="translate(150.2, 150.2)"/>
+<path d="M48.04444 62.93402L32.20462 52.73279L48.04444 76.45524L65.76135 52.73279L48.04444 62.93402Z" fill="#333333" transform="translate(150.2, 150.2)"/>
+<path d="M70.55516 66.63842H65.76135V73.76769H59.12375V77.61076H65.76135V85.56786H70.55516V77.61076H78.52344V73.76769H70.55516V66.63842Z" fill="url(#paint3_linear_564_124)" transform="translate(150.2, 150.2)"/>
+<path d="M70.55516 66.63842H65.76135V73.76769H59.12375V77.61076H65.76135V85.56786H70.55516V77.61076H78.52344V73.76769H70.55516V66.63842Z" fill="#333333" transform="translate(150.2, 150.2)"/>
 <defs>
-<linearGradient id="paint0_linear_564_124" x1="30.72" y1="0" x2="30.72" y2="61.44" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_564_124" x1="38.4" y1="0" x2="38.4" y2="76.8" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
-<linearGradient id="paint1_linear_564_124" x1="34.1376" y1="13.5168" x2="34.1376" y2="52.8384" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear_564_124" x1="42.672" y1="16.896" x2="42.672" y2="66.048" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
-<linearGradient id="paint2_linear_564_124" x1="34.1376" y1="13.5168" x2="34.1376" y2="52.8384" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint2_linear_564_124" x1="42.672" y1="16.896" x2="42.672" y2="66.048" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
-<linearGradient id="paint3_linear_564_124" x1="34.1376" y1="13.5168" x2="34.1376" y2="52.8384" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint3_linear_564_124" x1="42.672" y1="16.896" x2="42.672" y2="66.048" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF500"/>
 <stop offset="1" stop-color="#FF79C9"/>
 </linearGradient>
 </defs>
 </svg>`
+
+const getGradientText = (name: string) =>
+  `<style>text { font-family: sans-serif; font-size: 4px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }</style><text width="100" height="5" y="41" x="51%" fill="url(#grad1)">${name}</text>`
+
+const getProfileImage = (ensName: string) =>
+  `<image width="10" height="10" x="15" y="15" xlink:href="https://metadata.ens.domains/mainnet/avatar/${ensName}" />`
 
 export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
   users.get('/:addressOrENS/qr', async context => {
@@ -57,7 +63,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
     image = image
       .replace(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">',
-        `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 39 39">
+        `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 39 44">
         <defs>
         <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" style="stop-color:#FAF35F;stop-opacity:1" />
@@ -70,8 +76,9 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
 
     const svgWithLogo = image.replace(
       '</svg>',
-      `<rect x="13.9" y="13.9" width="12.2" height="12.2" fill="#333333"/>${efplogoSVG}<image width="10" height="10" x="15" y="15" xlink:href="https://metadata.ens.domains/mainnet/avatar/${ensName}" /></svg>`
+      `${efplogoSVG}${getProfileImage(ensName)}${getGradientText(ensName)}</svg>`
     )
+
     context.header('Content-Type', 'image/svg+xml;charset=utf-8')
     return context.body(svgWithLogo)
   })
