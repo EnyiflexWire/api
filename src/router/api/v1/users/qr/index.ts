@@ -77,9 +77,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
 
     const isValidAvatar = ensAvatar ? await checkIfAvatarIsValid(ensAvatar) : false
 
-    let image = qrcode
-      .imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' })
-      .toString('utf-8')
+    let image = qrcode.imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' }).toString('utf-8')
     image = image
       .replace(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">',
