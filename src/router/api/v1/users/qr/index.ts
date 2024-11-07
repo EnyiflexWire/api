@@ -33,12 +33,12 @@ const getProfileImage = async (ensAvatar: string) => {
   if (!res.ok) {
     return '' // Return an empty string if the image cannot be fetched
   }
-  const arrayBuffer = await res.arrayBuffer()
-  const base64String = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
-  // Determine the image MIME type (assuming JPEG or PNG)
-  const contentType = res.headers.get('Content-Type') || 'image/png'
+  // const arrayBuffer = await res.arrayBuffer()
+  // const base64String = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
+  // // Determine the image MIME type (assuming JPEG or PNG)
+  // const contentType = res.headers.get('Content-Type') || 'image/png'
 
-  return `<rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="#333333" /><image width="10" height="10" x="15" rx="1" y="15" href="data:${contentType};base64,${base64String}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
+  return `<rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="#333333" /><image width="10" height="10" x="15" rx="1" y="15" href="${ensAvatar}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
 }
 
 export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
