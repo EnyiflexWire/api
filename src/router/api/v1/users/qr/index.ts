@@ -45,8 +45,13 @@ const getGradientText = (nameOrAddress: string | Address) =>
         : nameOrAddress
   }</text>`
 
-const getProfileImage = (ensName: string) =>
-  `<image width="10" height="10" x="15" rx="1" y="15" xlink:href="https://metadata.ens.domains/mainnet/avatar/${ensName}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
+const getProfileImage = (ensAvatar: string) =>
+  `<image width="10" height="10" x="15" rx="1" y="15" xlink:href="${ensAvatar}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
+
+const checkIfAvatarIsValid = async (ensAvatar: string) => {
+  const res = await fetch(ensAvatar)
+  return res.ok
+}
 
 export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
   users.get('/:addressOrENS/qr', async context => {
@@ -54,16 +59,23 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
 
     let address: Address
     let ensName: string | null = null
+    let ensAvatar: string | undefined
+
     if (isAddress(addressOrENS)) {
       address = addressOrENS.toLowerCase() as Address
-      ensName = (await services.ens(env(context)).getENSProfile(address)).name
+      const ensProfile = await services.ens(env(context)).getENSProfile(address)
+      ensName = ensProfile.name
+      ensAvatar = ensProfile.avatar
     } else {
       ensName = addressOrENS
       address = await services.ens(env(context)).getAddress(addressOrENS)
+      ensAvatar = (await services.ens(env(context)).getENSProfile(address)).avatar
       if (!isAddress(address)) {
         return context.json({ response: 'ENS name not valid or does not exist' }, 404)
       }
     }
+
+    const isValidAvatar = ensAvatar ? await checkIfAvatarIsValid(ensAvatar) : false
 
     let image = qrcode.imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' }).toString('utf-8')
     image = image
@@ -82,7 +94,9 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
 
     const svgWithLogo = image.replace(
       '</svg>',
-      `${efplogoSVG}${ensName ? getProfileImage(ensName) : ''}${getGradientText(ensName || address)}</svg>`
+      `${efplogoSVG}${
+        isValidAvatar && ensAvatar ? getProfileImage(ensAvatar) : ''
+      }${getGradientText(ensName || address)}</svg>`
     )
 
     context.header('Content-Type', 'image/svg+xml;charset=utf-8')
