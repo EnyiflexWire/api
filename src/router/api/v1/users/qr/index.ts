@@ -46,7 +46,7 @@ const getGradientText = (nameOrAddress: string | Address) =>
   }</text>`
 
 const getProfileImage = (ensAvatar: string) =>
-  `<image width="10" height="10" x="15" rx="1" y="15" xlink:href="${ensAvatar}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
+  `<image width="10" height="10" x="15" rx="1" y="15" href="${ensAvatar}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
 
 const checkIfAvatarIsValid = async (ensAvatar: string) => {
   const res = await fetch(ensAvatar)
@@ -81,7 +81,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
     image = image
       .replace(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 39">',
-        `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 39 44">
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 39 44">
         <defs>
         <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" style="stop-color:#FAF35F;stop-opacity:1" />
