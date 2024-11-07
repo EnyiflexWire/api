@@ -6,35 +6,23 @@ import type { Services } from '#/service'
 import type { Address, Environment } from '#/types'
 import { isAddress } from '#/utilities'
 
-const efplogoSVG = `<svg width="64" height="64" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="120.1" height="120.1" fill="#333333" transform="translate(139.9, 140.1)"/>
-<rect width="98.94" height="98.94" rx="16.005" fill="url(#paint0_linear_564_124)" transform="translate(150.2, 150.2)"/>
-<rect width="98.94" height="98.94" rx="16.005" fill="white" fill-opacity="0.5" transform="translate(150.2, 150.2)"/>
-<path d="M32.20462 49.65903L48.04444 21.63364L65.76135 49.65903L48.04444 59.86126L32.20462 49.65903Z" fill="url(#paint1_linear_564_124)" transform="translate(150.2, 150.2)"/>
-<path d="M32.20462 49.65903L48.04444 21.63364L65.76135 49.65903L48.04444 59.86126L32.20462 49.65903Z" fill="#333333" transform="translate(150.2, 150.2)"/>
-<path d="M48.04444 62.93402L32.20462 52.73279L48.04444 76.45524L65.76135 52.73279L48.04444 62.93402Z" fill="url(#paint2_linear_564_124)" transform="translate(150.2, 150.2)"/>
-<path d="M48.04444 62.93402L32.20462 52.73279L48.04444 76.45524L65.76135 52.73279L48.04444 62.93402Z" fill="#333333" transform="translate(150.2, 150.2)"/>
-<path d="M70.55516 66.63842H65.76135V73.76769H59.12375V77.61076H65.76135V85.56786H70.55516V77.61076H78.52344V73.76769H70.55516V66.63842Z" fill="url(#paint3_linear_564_124)" transform="translate(150.2, 150.2)"/>
-<path d="M70.55516 66.63842H65.76135V73.76769H59.12375V77.61076H65.76135V85.56786H70.55516V77.61076H78.52344V73.76769H70.55516V66.63842Z" fill="#333333" transform="translate(150.2, 150.2)"/>
+const efplogoSVG = `
+<rect width="12" height="12" rx="2" x="14" y="14" fill="#333333" />
+<rect width="10" height="10" rx="2" x="15" y="15" fill="url(#grad-logo)" />
+<rect width="10" height="10" rx="2" x="15" y="15" fill="white" fill-opacity="0.5" />
+<path d="M3.62302 5.58664L5.4049995 2.4337845L7.398153 5.58664L5.4049995 6.73439175L3.62302 5.58664Z" fill="url(#paint1_linear_564_124)" transform="translate(14.5, 14.5)"/>
+<path d="M3.62302 5.58664L5.4049995 2.4337845L7.398153 5.58664L5.4049995 6.73439175L3.62302 5.58664Z" fill="#333333" transform="translate(14.5, 14.5)"/>
+<path d="M5.4049995 7.08007725L3.62302 5.932326L5.4049995 8.6012145L7.398153 5.932326L5.4049995 7.08007725Z" fill="url(#paint2_linear_564_124)" transform="translate(14.5, 14.5)"/>
+<path d="M5.4049995 7.08007725L3.62302 5.932326L5.4049995 8.6012145L7.398153 5.932326L5.4049995 7.08007725Z" fill="#333333" transform="translate(14.5, 14.5)"/>
+<path d="M7.9374555 7.49682225H7.398153V8.223864H6.651423H6.651423V8.7312105H7.398153V9.62638425H7.9374555V8.7312105H8.833887V8.223864H7.9374555V7.49682225Z" fill="url(#paint3_linear_564_124)" transform="translate(14.5, 14.5)"/>
+<path d="M7.9374555 7.49682225H7.398153V8.223864H6.651423H6.651423V8.7312105H7.398153V9.62638425H7.9374555V8.7312105H8.833887V8.223864H7.9374555V7.49682225Z" fill="#333333" transform="translate(14.5, 14.5)"/>
 <defs>
-<linearGradient id="paint0_linear_564_124" x1="38.4" y1="0" x2="38.4" y2="76.8" gradientUnits="userSpaceOnUse">
-<stop stop-color="#FFF500"/>
-<stop offset="1" stop-color="#FF79C9"/>
-</linearGradient>
-<linearGradient id="paint1_linear_564_124" x1="42.672" y1="16.896" x2="42.672" y2="66.048" gradientUnits="userSpaceOnUse">
-<stop stop-color="#FFF500"/>
-<stop offset="1" stop-color="#FF79C9"/>
-</linearGradient>
-<linearGradient id="paint2_linear_564_124" x1="42.672" y1="16.896" x2="42.672" y2="66.048" gradientUnits="userSpaceOnUse">
-<stop stop-color="#FFF500"/>
-<stop offset="1" stop-color="#FF79C9"/>
-</linearGradient>
-<linearGradient id="paint3_linear_564_124" x1="42.672" y1="16.896" x2="42.672" y2="66.048" gradientUnits="userSpaceOnUse">
-<stop stop-color="#FFF500"/>
-<stop offset="1" stop-color="#FF79C9"/>
-</linearGradient>
+        <linearGradient id="grad-logo" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#FFF500;stop-opacity:1" />
+            <stop offset="80%" style="stop-color:#FF79C9;stop-opacity:1" />
+        </linearGradient>
 </defs>
-</svg>`
+`
 
 const getGradientText = (nameOrAddress: string | Address) =>
   `<style>text { font-family: sans-serif; font-size: 3.5px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; }</style><text width="100" height="5" y="41" x="50%" fill="#eeeeee">${
@@ -46,7 +34,7 @@ const getGradientText = (nameOrAddress: string | Address) =>
   }</text>`
 
 const getProfileImage = (ensAvatar: string) =>
-  `<image width="10" height="10" x="15" rx="1" y="15" href="${ensAvatar}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
+  `<rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="#333333" /><image width="10" height="10" x="15" rx="1" y="15" href="${ensAvatar}" /><rect x="14.5" y="14.5" width="11" height="11" rx="2" fill="transparent" stroke="#333333" stroke-width="1" />`
 
 const checkIfAvatarIsValid = async (ensAvatar: string) => {
   const res = await fetch(ensAvatar)
