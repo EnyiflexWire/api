@@ -76,6 +76,7 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
     }
 
     const isValidAvatar = ensAvatar ? await checkIfAvatarIsValid(ensAvatar) : false
+    const profileImageSVG = isValidAvatar && ensAvatar ? getProfileImage(ensAvatar) : ''
 
     let image = qrcode.imageSync(`https://ethfollow.xyz/${address}`, { type: 'svg' }).toString('utf-8')
     image = image
@@ -94,12 +95,10 @@ export function qr(users: Hono<{ Bindings: Environment }>, services: Services) {
 
     const svgWithLogo = image.replace(
       '</svg>',
-      `${efplogoSVG}${
-        isValidAvatar && ensAvatar ? getProfileImage(ensAvatar) : ''
-      }${getGradientText(ensName || address)}</svg>`
+      `${efplogoSVG}${profileImageSVG}${getGradientText(ensName || address)}</svg>`
     )
 
-    context.header('Content-Type', 'image/svg+xml;charset=utf-8')
+    context.header('Content-Type', 'image/svg+xml')
     return context.body(svgWithLogo)
   })
 }
