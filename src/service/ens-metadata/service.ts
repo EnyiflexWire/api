@@ -2,6 +2,7 @@ import { ens_normalize } from '@adraffy/ens-normalize'
 import { type Kysely, type QueryResult, sql } from 'kysely'
 import { database } from '#/database'
 import { apiLogger } from '#/logger'
+import { ens } from '#/router/api/v1/users/ens'
 import type { Address, DB } from '#/types'
 import type { Environment } from '#/types/index'
 import { arrayToChunks, isAddress, raise } from '#/utilities.ts'
@@ -115,7 +116,6 @@ export class ENSMetadataService implements IENSMetadataService {
       }
       ensNameOrAddress = ens_normalize(ensNameOrAddress)
     }
-
     const cachedProfile = refresh ? false : await this.checkCache(ensNameOrAddress)
     try {
       if (cachedProfile && typeof cachedProfile !== 'boolean') {
@@ -139,6 +139,17 @@ export class ENSMetadataService implements IENSMetadataService {
           const ensProfileData = (await response.json()) as ENSProfile
           ensProfileData.name = ens_normalize(ensProfileData.name)
           ensProfileData.address = ensProfileData.address.toLowerCase() as Address
+
+          if (ensProfileData.contenthash) {
+            ensProfileData.records = JSON.stringify({
+              ...(typeof ensProfileData.records === 'object' && ensProfileData.records !== null
+                ? ensProfileData.records
+                : {}),
+              contenthash: ensProfileData.contenthash
+            })
+            ensProfileData.records = JSON.parse(ensProfileData?.records) as string
+          }
+
           try {
             await this.cacheRecord(ensProfileData)
           } catch (error) {

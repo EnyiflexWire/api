@@ -7,6 +7,7 @@ export type ENSProfile = {
   updated_at?: string
   //   display: string
   records?: string
+  contenthash?: string
   //   chains: Record<string, Address>
   //   fresh: number
   //   resolver: Address
