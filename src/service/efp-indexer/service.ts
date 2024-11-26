@@ -232,6 +232,7 @@ export interface IEFPIndexerService {
     sort: string | undefined
   ): Promise<FollowerResponse[]>
   getLatestFollowersByAddress(address: Address, limit: string, offset: string): Promise<LatestFollowerResponse[]>
+  getNotificationsByAddress(address: Address, limit: string, offset: string): Promise<LatestFollowerResponse[]>
   getUserFollowersByList(
     token_id: string,
     limit: string[] | string | undefined,
@@ -422,6 +423,20 @@ export class EFPIndexerService implements IEFPIndexerService {
     limit: string,
     offset: string
   ): Promise<LatestFollowerResponse[]> {
+    const query = sql<LatestFollowerRow>`SELECT * FROM query.get_latest_followers_by_address(${address}, ${limit}, ${offset})`
+    const result = await query.execute(this.#db)
+    if (!result || result.rows.length === 0) {
+      return []
+    }
+
+    return result.rows.map((row: LatestFollowerRow) => ({
+      address: row.follower,
+      efp_list_nft_token_id: row.efp_list_nft_token_id,
+      updated_at: row.updated_at
+    }))
+  }
+
+  async getNotificationsByAddress(address: Address, limit: string, offset: string): Promise<LatestFollowerResponse[]> {
     const query = sql<LatestFollowerRow>`SELECT * FROM query.get_latest_followers_by_address(${address}, ${limit}, ${offset})`
     const result = await query.execute(this.#db)
     if (!result || result.rows.length === 0) {

@@ -14,6 +14,7 @@ import { following } from './following'
 import { latestFollowers } from './latestFollowers'
 import { listRecords } from './list-records'
 import { lists } from './lists'
+import { notifications } from './notifications'
 import { poap } from './poap'
 import { primaryList } from './primary-list'
 import { qr } from './qr'
@@ -41,6 +42,7 @@ export function users(services: Services): Hono<{ Bindings: Environment }> {
   latestFollowers(users, services)
   listRecords(users, services)
   lists(users, services)
+  notifications(users, services)
   poap(users, services)
   primaryList(users, services)
   qr(users, services)
