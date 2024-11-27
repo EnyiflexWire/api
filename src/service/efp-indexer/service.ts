@@ -72,6 +72,17 @@ export type LatestFollowerRow = {
   updated_at: string
 }
 
+export type NotificationRow = {
+  address: Address
+  name: string
+  avatar: string
+  token_id: bigint
+  opcode: bigint
+  op: string
+  tag: string
+  updated_at: string
+}
+
 export type SearchFollowerRow = FollowerRow & {
   name: string | null
   avatar: string | null
@@ -232,6 +243,13 @@ export interface IEFPIndexerService {
     sort: string | undefined
   ): Promise<FollowerResponse[]>
   getLatestFollowersByAddress(address: Address, limit: string, offset: string): Promise<LatestFollowerResponse[]>
+  getNotificationsByAddress(
+    address: Address,
+    opcode: string,
+    interval: string,
+    limit: string,
+    offset: string
+  ): Promise<NotificationRow[]>
   getUserFollowersByList(
     token_id: string,
     limit: string[] | string | undefined,
@@ -431,6 +449,31 @@ export class EFPIndexerService implements IEFPIndexerService {
     return result.rows.map((row: LatestFollowerRow) => ({
       address: row.follower,
       efp_list_nft_token_id: row.efp_list_nft_token_id,
+      updated_at: row.updated_at
+    }))
+  }
+
+  async getNotificationsByAddress(
+    address: Address,
+    opcode: string,
+    interval: string,
+    limit: string,
+    offset: string
+  ): Promise<NotificationRow[]> {
+    const query = sql<NotificationRow>`SELECT * FROM query.get_notifications_by_address(${address}, ${opcode}, ${interval}, ${limit}, ${offset})`
+    const result = await query.execute(this.#db)
+    if (!result || result.rows.length === 0) {
+      return []
+    }
+
+    return result.rows.map((row: NotificationRow) => ({
+      address: row.address,
+      name: row.name,
+      avatar: row.avatar,
+      token_id: row.token_id,
+      opcode: row.opcode,
+      op: row.op,
+      tag: row.tag,
       updated_at: row.updated_at
     }))
   }

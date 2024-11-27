@@ -9,6 +9,7 @@ import type {
   LatestFollowerResponse,
   LeaderBoardRow,
   MintersRow,
+  NotificationRow,
   RankCountsRow,
   RankRow,
   RecommendedDetailsRow,
@@ -20,6 +21,15 @@ import type {
 import { type SocialGraph, makeSocialGraph } from './social-graph'
 
 export class MockEFPIndexerService implements IEFPIndexerService {
+  getNotificationsByAddress(
+    _address: Address,
+    _opcode: string,
+    _interval: string,
+    _limit: string,
+    _offset: string
+  ): Promise<NotificationRow[]> {
+    throw new Error('Method not implemented.')
+  }
   readonly #socialGraph: SocialGraph
 
   constructor() {
