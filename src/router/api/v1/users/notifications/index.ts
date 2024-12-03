@@ -11,7 +11,7 @@ export function notifications(users: Hono<{ Bindings: Environment }>, services: 
   users.get('/:addressOrENS/notifications', includeValidator, async context => {
     const { addressOrENS } = context.req.param()
     const { cache } = context.req.query()
-    let { offset, limit, opcode, interval } = context.req.valid('query')
+    let { offset, limit, opcode, interval, tag } = context.req.valid('query')
     if (!limit) limit = '10'
     if (!offset) offset = '0'
     if (!(opcode && [1, 2, 3, 4].includes(Number(opcode)))) opcode = '0'
@@ -37,9 +37,17 @@ export function notifications(users: Hono<{ Bindings: Environment }>, services: 
       return context.json({ response: 'ENS name not valid or does not exist' }, 404)
     }
 
+    console.log({
+      address,
+      opcode,
+      interval,
+      tag,
+      limit,
+      offset
+    })
     const notifications: NotificationRow[] = await services
       .efp(env(context))
-      .getNotificationsByAddress(address, opcode as string, interval, limit as string, offset as string)
+      .getNotificationsByAddress(address, opcode as string, interval, tag as string, limit as string, offset as string)
 
     const response = notifications.map(notification => {
       return {
