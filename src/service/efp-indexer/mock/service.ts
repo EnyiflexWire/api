@@ -21,15 +21,6 @@ import type {
 import { type SocialGraph, makeSocialGraph } from './social-graph'
 
 export class MockEFPIndexerService implements IEFPIndexerService {
-  getNotificationsByAddress(
-    _address: Address,
-    _opcode: string,
-    _interval: string,
-    _limit: string,
-    _offset: string
-  ): Promise<NotificationRow[]> {
-    throw new Error('Method not implemented.')
-  }
   readonly #socialGraph: SocialGraph
 
   constructor() {
@@ -136,6 +127,17 @@ export class MockEFPIndexerService implements IEFPIndexerService {
   }
 
   getLatestFollowersByAddress(_address: Address, _limit: string, _offset: string): Promise<LatestFollowerResponse[]> {
+    throw new Error('Method not implemented.')
+  }
+
+  getNotificationsByAddress(
+    _address: Address,
+    _opcode: string,
+    _interval: string,
+    _tag: string,
+    _limit: string,
+    _offset: string
+  ): Promise<NotificationRow[]> {
     throw new Error('Method not implemented.')
   }
 
