@@ -24,7 +24,7 @@ export function notifications(users: Hono<{ Bindings: Environment }>, services: 
     else interval = '168:00:00'
 
     const cacheKV = context.env.EFP_DATA_CACHE
-    const cacheTarget = `users/${addressOrENS}/notifications?opcode=${opcode}&interval=${interval}&limit=${limit}&offset=${offset}`
+    const cacheTarget = `users/${addressOrENS}/notifications?opcode=${opcode}&interval=${interval}&tag=${tag}&limit=${limit}&offset=${offset}`
 
     if (cache !== 'fresh') {
       const cacheHit = await cacheKV.get(cacheTarget, 'json')
