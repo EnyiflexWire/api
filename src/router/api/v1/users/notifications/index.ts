@@ -15,6 +15,7 @@ export function notifications(users: Hono<{ Bindings: Environment }>, services: 
     if (!limit) limit = '10'
     if (!offset) offset = '0'
     if (!(opcode && [1, 2, 3, 4].includes(Number(opcode)))) opcode = '0'
+    if (!tag || tag === '') tag = 'p_tag_empty'
     if (interval === 'hour') interval = '1:00:00'
     else if (interval === 'day') interval = '24:00:00'
     else if (interval === 'week') interval = '168:00:00'
